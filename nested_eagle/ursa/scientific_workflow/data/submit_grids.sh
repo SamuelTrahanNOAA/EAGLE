@@ -2,7 +2,7 @@
 #SBATCH -J nested_eagle_create_grids
 #SBATCH -o slurm/grids_preprocessing.%j.out
 #SBATCH -e slurm/grids_preprocessing.%j.err
-#SBATCH --account=epic
+#SBATCH --account=zrtrr
 #SBATCH --partition=u1-service
 #SBATCH --mem=128g
 #SBATCH -t 30:00

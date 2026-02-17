@@ -12,10 +12,9 @@ nodes:
     attributes: ${graph.attributes.nodes}
   hidden:
     node_builder:
-      _target_: anemoi.graphs.nodes.NPZFileNodes
-      npz_file: ${hardware.paths.data}/${hardware.files.npz_file}
-      lat_key: lat
-      lon_key: lon
+      _target_: anemoi.graphs.nodes.AnemoiDatasetNodes # options: AnemoiDatasetNodes, NPZFileNodes
+      dataset: ${dataloader.dataset}
+    attributes: ${graph.attributes.nodes} # options: l1, l2, unit-max, unit-sum, unit-std
 
 edges:
   # Encoder configuration

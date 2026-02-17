@@ -2,7 +2,7 @@
 #SBATCH -J nested_eagle_postprocessing
 #SBATCH -o slurm/postprocessing.%j.out
 #SBATCH -e slurm/postprocessing.%j.err
-#SBATCH --account=epic
+#SBATCH --account=zrtrr
 #SBATCH --partition=u1-service
 #SBATCH --mem=128g
 #SBATCH -t 30:00

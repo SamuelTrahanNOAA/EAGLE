@@ -25,7 +25,7 @@ leadtimes:
   stop: 24
 meta:
   grids: "{{ meta.workdir }}/grids"
-  workdir: wxvx_workdir/global
+  workdir: /scratch4/BMC/wrfruc/Samuel.Trahan/aistuff/neweagle/nested_eagle/ursa/scientific_workflow/verification/grid2obs/wxvx_workdir/global
 paths:
   grids:
     forecast: "{{ meta.grids }}/forecast"

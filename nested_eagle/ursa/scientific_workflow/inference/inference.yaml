@@ -1,4 +1,4 @@
-checkpoint_path: ../training/outputs/checkpoint/6b67c174-ae26-41e3-b8aa-50b74469fe80/inference-last.ckpt
+checkpoint_path: ../training/outputs/checkpoint/50f9786d-e44c-4570-b362-c109c7aa8e7b/inference-last.ckpt
 lead_time: 24
 input_dataset_kwargs:
   cutout:

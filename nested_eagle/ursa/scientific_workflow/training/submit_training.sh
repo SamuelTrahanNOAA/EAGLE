@@ -3,7 +3,7 @@
 #SBATCH -o slurm/training.%j.out
 #SBATCH -e slurm/training.%j.err
 #SBATCH --nodes=1
-#SBATCH --account=epic
+#SBATCH --account=zrtrr
 #SBATCH -t 30:00
 #SBATCH --partition=u1-h100
 #SBATCH --gres=gpu:h100:1
@@ -18,5 +18,6 @@ module load openmpi cuda gcc
 
 export SLURM_GPUS_PER_NODE=1
 export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+export HYDRA_FULL_ERROR=1
 
 anemoi-training train --config-name=config

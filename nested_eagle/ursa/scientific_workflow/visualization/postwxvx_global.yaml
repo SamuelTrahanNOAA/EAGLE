@@ -4,7 +4,7 @@ freq: 6h
 
 leadtimes:
   start: 0
-  end: 240
+  end: 24
   step: 6
 
 variable_prefixes:
@@ -18,4 +18,4 @@ variable_prefixes:
   - sp_surface
 
 stat_prefix: point_stat_nested_global
-work_path: ../verification/wxvx_workdir/global
+work_path: ../verification/grid2obs/wxvx_workdir/global

@@ -80,13 +80,13 @@ multisource:
         # Diagnostic
         - accum_tp
 
-transforms:
-  horizontal_regrid:
-    target_grid_path: hrrr_15km.nc
-    regridder_kwargs:
-      method: conservative
-      reuse_weights: True
-      filename: conservative_1059x1799_211x359.nc
+transforms: {}
+  # horizontal_regrid:
+  #   target_grid_path: hrrr_15km.nc
+  #   regridder_kwargs:
+  #     method: conservative
+  #     reuse_weights: True
+  #     filename: conservative_1059x1799_211x359.nc
 
 target:
   name: anemoi

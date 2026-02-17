@@ -60,6 +60,7 @@ data:
       - lsm
 
 dataloader:
+  dataset: ${hardware.paths.data}/${hardware.files.dataset}
   batch_size:
     training: 2
     validation: 2
@@ -72,15 +73,6 @@ dataloader:
     training: null
     validation: null
     test: 1
-  dataset:
-    cutout:
-      # LAM
-      - dataset: ${hardware.paths.data}/${hardware.files.lam_dataset}
-        trim_edge: [10, 11, 10, 11]
-      # Global forcing
-      - dataset: ${hardware.paths.data}/${hardware.files.global_dataset}
-    adjust: all
-    min_distance_km: 0
   training:
     start: 2022-02-01
     end: 2022-02-02
@@ -159,15 +151,15 @@ diagnostics:
           ] # in mm
         precip_and_related_fields: ${diagnostics.plot.precip_and_related_fields}
         colormaps: ${diagnostics.plot.colormaps}
-      - _target_: anemoi.training.diagnostics.callbacks.plot.PlotSpectrum
-        sample_idx: ${diagnostics.plot.sample_idx}
-        every_n_batches: ${diagnostics.plot.frequency.batch}
-        parameters:
-          - gh_500
-          - accum_tp
-          - t2m
-          - u10
-          - v10
+      # - _target_: anemoi.training.diagnostics.callbacks.plot.PlotSpectrum
+      #   sample_idx: ${diagnostics.plot.sample_idx}
+      #   every_n_batches: ${diagnostics.plot.frequency.batch}
+      #   parameters:
+      #     - gh_500
+      #     - accum_tp
+      #     - t2m
+      #     - u10
+      #     - v10
       - _target_: anemoi.training.diagnostics.callbacks.plot.PlotHistogram
         sample_idx: ${diagnostics.plot.sample_idx}
         every_n_batches: ${diagnostics.plot.frequency.batch}
@@ -193,10 +185,9 @@ graph:
       attributes: ${graph.attributes.nodes}
     hidden:
       node_builder:
-        _target_: anemoi.graphs.nodes.NPZFileNodes
-        npz_file: ${hardware.paths.data}/${hardware.files.npz_file}
-        lat_key: lat
-        lon_key: lon
+        _target_: anemoi.graphs.nodes.AnemoiDatasetNodes # options: AnemoiDatasetNodes, NPZFileNodes
+        dataset: ${dataloader.dataset}
+      attributes: ${graph.attributes.nodes}
   edges:
     # Encoder
     - source_name: ${graph.data}
@@ -219,20 +210,10 @@ graph:
   attributes:
     nodes:
       # Attributes for data nodes
-      cutout_mask:
-        _target_: anemoi.graphs.nodes.attributes.CutOutMask
-      boundary_mask:
-        _target_: anemoi.graphs.nodes.attributes.BooleanNot
-        masks:
-          _target_: anemoi.graphs.nodes.attributes.CutOutMask
       area_weight:
         _target_: anemoi.graphs.nodes.attributes.SphericalAreaWeights
         norm: unit-max
         fill_value: 0
-      lam_area_weight:
-        _target_: anemoi.graphs.nodes.attributes.MaskedPlanarAreaWeights
-        mask_node_attr_name: cutout_mask
-        norm: unit-max
     edges:
       edge_length:
         _target_: anemoi.graphs.edges.attributes.EdgeLength
@@ -252,10 +233,7 @@ hardware:
     graph: ../data
     output: outputs/
   files:
-    graph: graph.latentx2.spongex1.12knn.pt
-    npz_file: latentx2.spongex1.combined.sorted.npz
-    lam_dataset: hrrr.zarr
-    global_dataset: gfs.zarr
+    dataset: hrrr.zarr
 
 model:
   num_channels: 512

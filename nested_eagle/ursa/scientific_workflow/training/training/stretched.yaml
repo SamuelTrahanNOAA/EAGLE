@@ -88,18 +88,6 @@ validation_metrics:
     scalers: ["node_weights"]
     # other kwargs
     ignore_nans: True
-  mse_inside_lam_contribution:
-    _target_: anemoi.training.losses.MSELoss
-    scalers: ["limited_area_mask", "node_weights"]
-    ignore_nans: True
-  mse_outside_lam_contribution:
-    _target_: anemoi.training.losses.MSELoss
-    scalers: ["outside_lam_mask", "node_weights"]
-    ignore_nans: True
-  mse_inside_lam:
-    _target_: anemoi.training.losses.MSELoss
-    scalers: ["lam_node_weights"]
-    ignore_nans: True
 
 variable_groups:
   default: sfc

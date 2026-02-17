@@ -2,7 +2,7 @@
 #SBATCH -J nested_eagle_obs_verification
 #SBATCH -o slurm/lam_verification.%j.out
 #SBATCH -e slurm/lam_verification.%j.err
-#SBATCH --account=epic
+#SBATCH --account=zrtrr
 #SBATCH --partition=u1-service
 #SBATCH --mem=128g
 #SBATCH -t 30:00
