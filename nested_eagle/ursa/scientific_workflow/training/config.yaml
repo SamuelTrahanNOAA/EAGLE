@@ -293,5 +293,3 @@ training:
         u10: 0.1
         v10: 0.1
         accum_tp: 0.025
-    node_weights:
-      weight_frac_of_total: 0.1
