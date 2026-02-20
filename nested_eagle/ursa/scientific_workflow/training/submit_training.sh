@@ -20,4 +20,7 @@ export SLURM_GPUS_PER_NODE=1
 export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
 export HYDRA_FULL_ERROR=1
 
+export PYTORCH_NO_CUDA_MEMORY_CACHING=1
+export CUDA_LAUNCH_BLOCKING=1
+
 anemoi-training train --config-name=config

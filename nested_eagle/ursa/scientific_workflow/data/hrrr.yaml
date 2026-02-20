@@ -15,6 +15,11 @@ multisource:
         end: 2022-02-04T18
         freq: 6h
 
+      slices:
+        isel:
+          x: [0, null, 2]
+          y: [0, null, 2]
+
       fhr:
         start: 0
         end: 0
@@ -70,6 +75,11 @@ multisource:
         start: 2022-02-01T00
         end: 2022-02-04T12
         freq: 6h
+
+      slices:
+        isel:
+          x: [0, null, 2]
+          y: [0, null, 2]
 
       fhr:
         start: 6
