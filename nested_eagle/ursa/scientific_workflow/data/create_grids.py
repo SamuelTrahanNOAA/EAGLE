@@ -51,19 +51,13 @@ def get_conus_data_grid():
     # Get the nodes and bounds by subsampling carefully...
     # see notebooks
     hds = hds.isel(
-        x=slice(None, -4, None),
-        y=slice(None, -4, None),
-        x_b=slice(None, -4, None),
-        y_b=slice(None, -4, None),
+        x=slice(1, -1, 2),
+        y=slice(1, -1, 2),
+        x_b=slice(None, -1, 2),
+        y_b=slice(None, -1, 2),
     )
-    chds = hds.isel(
-        x=slice(2, None, 5),
-        y=slice(2, None, 5),
-        x_b=slice(0, None, 5),
-        y_b=slice(0, None, 5),
-    )
-    chds = chds.drop_vars("orog")
-    return chds
+    hds = hds.drop_vars("orog")
+    return hds
 
 
 def get_global_latent_grid():
@@ -77,7 +71,7 @@ def get_global_latent_grid():
     return mesh
 
 
-def get_conus_latent_grid(xds, trim=10, coarsen=2):
+def get_conus_latent_grid(xds, trim=10, coarsen=3):
     mesh = xds[["lat_b", "lon_b"]].isel(
         x_b=slice(trim, -trim - 1, coarsen),
         y_b=slice(trim, -trim - 1, coarsen),
@@ -121,7 +115,7 @@ if __name__ == "__main__":
     gds.to_netcdf("global_one_degree.nc")
 
     cds = get_conus_data_grid()
-    cds.to_netcdf("hrrr_15km.nc")
+    cds.to_netcdf("hrrr_6km.nc")
 
     # Latent meshes
     gmesh = get_global_latent_grid()

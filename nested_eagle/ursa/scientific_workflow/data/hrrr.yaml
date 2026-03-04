@@ -82,11 +82,11 @@ multisource:
 
 transforms:
   horizontal_regrid:
-    target_grid_path: hrrr_15km.nc
+    target_grid_path: hrrr_6km.nc
     regridder_kwargs:
       method: conservative
       reuse_weights: True
-      filename: conservative_1059x1799_211x359.nc
+      filename: conservative_hrrr_6km_weights.nc
 
 target:
   name: anemoi

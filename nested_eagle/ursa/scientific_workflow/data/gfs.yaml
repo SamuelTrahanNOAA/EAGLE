@@ -86,7 +86,7 @@ transforms:
     regridder_kwargs:
       method: conservative
       reuse_weights: True
-      filename: conservative_719x1440_180x360.nc
+      filename: conservative_gfs_1deg_weights.nc
 
 target:
   name: anemoi
