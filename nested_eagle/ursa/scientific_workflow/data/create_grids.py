@@ -32,6 +32,11 @@ def get_conus_data_grid():
         open_static_vars=True,
         cache_dir="cache/grid-creation",
     )
+    hds = hds.isel(
+        x=slice(0, None, 2),
+        y=slice(0, None, 2)
+    )
+
     hds = hds.rename({"latitude": "lat", "longitude": "lon"})
 
     # Get bounds as vertices
@@ -47,15 +52,6 @@ def get_conus_data_grid():
         hds = hds.drop_vars(f"{key}_bounds")
 
     hds = hds.rename({"x_vertices": "x_b", "y_vertices": "y_b"})
-
-    # Get the nodes and bounds by subsampling carefully...
-    # see notebooks
-    hds = hds.isel(
-        x=slice(1, -1, 2),
-        y=slice(1, -1, 2),
-        x_b=slice(None, -1, 2),
-        y_b=slice(None, -1, 2),
-    )
     hds = hds.drop_vars("orog")
     return hds
 
@@ -73,8 +69,8 @@ def get_global_latent_grid():
 
 def get_conus_latent_grid(xds, trim=10, coarsen=3):
     mesh = xds[["lat_b", "lon_b"]].isel(
-        x_b=slice(trim, -trim - 1, coarsen),
-        y_b=slice(trim, -trim - 1, coarsen),
+        x_b=slice(trim, -trim, coarsen),
+        y_b=slice(trim, -trim, coarsen),
     )
     mesh = mesh.rename(
         {
