@@ -33,8 +33,8 @@ def get_conus_data_grid():
         cache_dir="cache/grid-creation",
     )
     hds = hds.isel(
-        x=slice(0, None, 2),
-        y=slice(0, None, 2)
+        x=slice(1, -1, 2),
+        y=slice(1, -1, 2)
     )
 
     hds = hds.rename({"latitude": "lat", "longitude": "lon"})
@@ -69,8 +69,8 @@ def get_global_latent_grid():
 
 def get_conus_latent_grid(xds, trim=10, coarsen=3):
     mesh = xds[["lat_b", "lon_b"]].isel(
-        x_b=slice(trim, -trim, coarsen),
-        y_b=slice(trim, -trim, coarsen),
+        x_b=slice(trim, -trim - 1, coarsen),
+        y_b=slice(trim, -trim - 1, coarsen),
     )
     mesh = mesh.rename(
         {
