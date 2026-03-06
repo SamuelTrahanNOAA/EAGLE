@@ -3,7 +3,7 @@ lead_time: 24
 input_dataset_kwargs:
   cutout:
     - dataset: ../data/hrrr.zarr
-      trim_edge: [10, 11, 10, 11]
+      trim_edge: [10, 10, 10, 10]
     - dataset: ../data/gfs.zarr
   adjust: all
   min_distance_km: 0

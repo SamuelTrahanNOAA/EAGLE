@@ -8,7 +8,7 @@ nodes:
       dataset:
         cutout:
           - dataset: "hrrr.zarr"
-            trim_edge: [10, 11, 10, 11]
+            trim_edge: [10, 10, 10, 10]
           - dataset: "gfs.zarr"
         adjust: all
         min_distance_km: 0
@@ -40,7 +40,7 @@ edges:
   target_name: hidden
   edge_builders:
   - _target_: anemoi.graphs.edges.KNNEdges
-    num_nearest_neighbours: 20
+    num_nearest_neighbours: 24
     source_mask_attr_name: null
     target_mask_attr_name: null
   attributes:

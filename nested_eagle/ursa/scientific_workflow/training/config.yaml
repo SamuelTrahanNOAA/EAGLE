@@ -76,7 +76,7 @@ dataloader:
     cutout:
       # LAM
       - dataset: ${hardware.paths.data}/${hardware.files.lam_dataset}
-        trim_edge: [10, 11, 10, 11]
+        trim_edge: [10, 10, 10, 10]
       # Global forcing
       - dataset: ${hardware.paths.data}/${hardware.files.global_dataset}
     adjust: all
@@ -194,7 +194,7 @@ graph:
       target_name: ${graph.hidden}
       edge_builders:
         - _target_: anemoi.graphs.edges.KNNEdges
-          num_nearest_neighbours: 12
+          num_nearest_neighbours: 24
           source_mask_attr_name: null
           target_mask_attr_name: null
       attributes: ${graph.attributes.edges}

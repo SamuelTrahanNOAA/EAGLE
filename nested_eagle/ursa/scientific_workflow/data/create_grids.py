@@ -69,8 +69,8 @@ def get_global_latent_grid():
 
 def get_conus_latent_grid(xds, trim=10, coarsen=3):
     mesh = xds[["lat_b", "lon_b"]].isel(
-        x_b=slice(trim, -trim - 1, coarsen),
-        y_b=slice(trim, -trim - 1, coarsen),
+        x_b=slice(trim, -trim, coarsen),
+        y_b=slice(trim, -trim, coarsen),
     )
     mesh = mesh.rename(
         {
