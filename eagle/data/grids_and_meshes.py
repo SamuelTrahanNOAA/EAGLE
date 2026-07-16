@@ -54,20 +54,20 @@ class GridsAndMeshes(AssetsTimeInvariant):
         The global grid, provisioned to the rundir.
         """
         res = self.config["global_grid_resolution_deg"]
-        if res == 0.25 or "gfs_target_grid" not in self.config["filenames"]:
-            yield self.taskname("global data grid (skipping)")
-            yield Asset(None, lambda: True)
-            yield None
-        else:
-            path = self.rundir / self.config["filenames"]["gfs_target_grid"]
-            yield self.taskname(f"global data grid {path}")
-            yield Asset(path, path.is_file)
-            yield None
-            path.parent.mkdir(parents=True, exist_ok=True)
-            ds = xesmf.util.grid_global(res, res, cf=True, lon1=360)
-            ds = ds.drop_vars("latitude_longitude")
-            ds = ds.sortby("lat", ascending=False)  # GFS goes north -> south
-            ds.to_netcdf(path)
+        if "gfs_target_grid" not in self.config["filenames"]:
+            raise BaseException("should not get here (2)")
+            return
+        path = self.rundir / self.config["filenames"]["gfs_target_grid"]
+        yield self.taskname(f"global data grid {path}")
+        yield Asset(path, path.is_file)
+        yield None
+        path.parent.mkdir(parents=True, exist_ok=True)
+        # ds = xesmf.util.grid_global(res, res, cf=True, lon1=360)
+        ds = xesmf.util.cf_grid_2d(lon0_b=-142, lon1_b=-53, lat0_b=18, lat1_b=55,
+                                   d_lon=res, d_lat=res)
+        ds = ds.drop_vars("latitude_longitude")
+        ds = ds.sortby("lat", ascending=False)  # GFS goes north -> south
+        ds.to_netcdf(path)
 
     @task
     def latent_mesh(self):
@@ -152,6 +152,7 @@ def _combine_global_and_conus_meshes(
     return {"lon": lon, "lat": lat}
 
 
+
 @cache
 def _conus_data_grid(rundir: Path, logfile: Path, resolution_km: int = 15) -> Dataset:
     with LOCK:
@@ -178,6 +179,7 @@ def _conus_data_grid(rundir: Path, logfile: Path, resolution_km: int = 15) -> Da
             hds = hds.assign_coords({f"{key}_b": corners})
             hds = hds.drop_vars(f"{key}_bounds")
         hds = hds.rename({"x_vertices": "x_b", "y_vertices": "y_b"})
+
         stride = resolution_km // 3
         # Get the nodes and bounds by subsampling.
         trim = stride - 1
@@ -232,9 +234,12 @@ def _global_latent_grid(resolution_deg: float) -> Dataset:
     data grid is on an xESMF generated grid, it works out just fine to generate another
     xESMF grid here.
     """
-    mesh: Dataset = xesmf.util.grid_global(
-        resolution_deg, resolution_deg, cf=True, lon1=360
-    )
+    res = resolution_deg
+    mesh: Dataset = xesmf.util.cf_grid_2d(lon0_b=-142, lon1_b=-53, lat0_b=18, lat1_b=55,
+                                          d_lon=res, d_lat=res)
+    #mesh: Dataset = xesmf.util.grid_global(
+    #    resolution_deg, resolution_deg, cf=True, lon1=360
+    #)
     return mesh.drop_vars("latitude_longitude")
 
 
