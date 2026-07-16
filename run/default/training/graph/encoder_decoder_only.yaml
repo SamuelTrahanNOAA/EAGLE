@@ -1,0 +1,63 @@
+---
+overwrite: True
+
+nodes:
+    data:
+      node_builder:
+        _target_: anemoi.graphs.nodes.AnemoiDatasetNodes  # options: AnemoiDatasetNodes, NPZFileNodes
+        dataset: ${dataloader.training.datasets.data.dataset_config}
+      attributes: ${graph.attributes.nodes} # options: l1, l2, unit-max, unit-sum, unit-std
+    hidden:
+      node_builder:
+        _target_: anemoi.graphs.nodes.NPZFileNodes # options: AnemoiDatasetNodes, NPZFileNodes
+        npz_file: ${system.input.latent_mesh} # options: l1, l2, unit-max, unit-sum, unit-std
+        lat_key: lat
+        lon_key: lon
+
+edges:
+
+# Encoder configuration
+- source_name: data
+  target_name: hidden
+  edge_builders:
+  - _target_: anemoi.graphs.edges.KNNEdges # options: KNNEdges, CutOffEdges
+    num_nearest_neighbours: 24
+    source_mask_attr_name: null
+    target_mask_attr_name: null
+  attributes: ${graph.attributes.edges}
+
+  # Decoder configuration
+- source_name: hidden
+  target_name: data
+  edge_builders:
+  - _target_: anemoi.graphs.edges.KNNEdges # options: KNNEdges, CutOffEdges
+    num_nearest_neighbours: 4
+    source_mask_attr_name: null
+    target_mask_attr_name: null
+  attributes: ${graph.attributes.edges}
+
+attributes:
+  nodes:
+    cutout_mask:
+      _target_: anemoi.graphs.nodes.attributes.CutOutMask
+    boundary_mask:
+      _target_: anemoi.graphs.nodes.attributes.BooleanNot
+      masks:
+        _target_: anemoi.graphs.nodes.attributes.CutOutMask
+    area_weight:
+      _target_: anemoi.graphs.nodes.attributes.SphericalAreaWeights
+      norm: unit-max
+      fill_value: 0
+    lam_area_weight:
+      _target_: anemoi.graphs.nodes.attributes.MaskedPlanarAreaWeights
+      mask_node_attr_name: cutout_mask
+      norm: unit-max
+  edges:
+    edge_length:
+      _target_: anemoi.graphs.edges.attributes.EdgeLength
+      norm: unit-max
+    edge_dirs:
+      _target_: anemoi.graphs.edges.attributes.EdgeDirection
+      norm: unit-std
+
+post_processors: []

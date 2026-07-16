@@ -1,0 +1,27 @@
+defaults:
+- data: zarr
+- dataloader: native_grid
+- diagnostics: evaluation
+# - system: slurm
+- graph: encoder_decoder_only
+- model: transformer
+- training: stretched
+- task: forecaster
+- system: ursa
+- _self_
+
+config_validation: true
+
+system:
+  input:
+    global_dataset: ../data/gfs.zarr
+    graph: ../data/graph.latentx2.spongex1.12knn.pt
+    lam_dataset: ../data/hrrr.zarr
+    latent_mesh: ../data/latentx2.spongex1.combined.sorted.npz
+
+  output:
+    checkpoints:
+      root: checkpoint
+      every_n_epochs: anemoi-by_epoch-epoch_{epoch:03d}-step_{step:06d}
+      every_n_train_steps: anemoi-by_step-epoch_{epoch:03d}-step_{step:06d}
+      every_n_minutes: anemoi-by_time-epoch_{epoch:03d}-step_{step:06d}

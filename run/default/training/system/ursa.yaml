@@ -1,0 +1,20 @@
+input:
+  # To load the graph from a file, you need to provide a path here like: /path/to/your/graph.pt
+  # If no such file exists, the graph will be created from the config.
+  truncation: null
+  truncation_inv: null
+  loss_matrices_path: null
+  warm_start: null
+hardware:
+  accelerator: auto
+  num_gpus_per_node: 1
+  num_nodes: 1
+  num_gpus_per_model: 1
+output:
+  root: outputs
+  plots: plots
+  profiler: profiler
+  logs:
+    root: logs
+    mlflow: mlflow
+    tensorboard: tensorboard 

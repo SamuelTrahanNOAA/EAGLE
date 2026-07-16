@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#SBATCH --account=gpu-wizard
+#SBATCH --export=NONE
+#SBATCH --gres=gpu:h100:1
+#SBATCH --mem=128G
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --output=runscript.training.out
+#SBATCH --partition=u1-h100
+#SBATCH --qos=gpu
+#SBATCH --time=04:00:00
+
+source ../../../conda/bin/activate
+conda activate anemoi
+
+set -ex
+
+export SLURM_GPUS_PER_NODE=1
+export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+export HYDRA_FULL_ERROR=1
+export MLFLOW_ALLOW_FILE_STORE=true
+
+time anemoi-training train --config-name=training
+
+test $? -eq 0 && touch runscript.training.done

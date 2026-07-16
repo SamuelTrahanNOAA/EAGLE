@@ -1,0 +1,19 @@
+mlflow:
+  _target_: anemoi.training.diagnostics.mlflow.logger.AnemoiMLflowLogger
+  authentication: false
+  enabled: true
+  expand_hyperparams: [ config ]
+  experiment_name: Nested-EAGLE-1deg15km-deterministic
+  http_max_retries: 35
+  log_model: false
+  max_params_length: 2000
+  offline: true
+  on_resume_create_child: true
+  project_name: Nested-EAGLE
+  run_name: null
+  save_dir: ${system.output.logs.mlflow}
+  system: false
+  terminal: true
+  tracking_uri: null
+
+interval: 100 # passed to trainer.log_every_n_steps

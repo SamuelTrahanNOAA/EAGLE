@@ -1,0 +1,21 @@
+checkpoint: ARGUMENT
+date: '2022-02-03T12'
+lead_time: 24
+runner: 'default'
+
+input:
+  data:
+    dataset:
+      cutout:
+      - dataset: '../data/hrrr.zarr'
+        trim_edge: [10, 11, 10, 11]
+      - dataset: '../data/gfs.zarr'
+      adjust: 'all'
+      min_distance_km: 0
+
+output:
+  data:
+    netcdf:
+      path: 'output/2022-02-03T12.24h.nc'
+
+verbosity: 1

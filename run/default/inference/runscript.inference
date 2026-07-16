@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#SBATCH --account=gpu-wizard
+#SBATCH --export=NONE
+#SBATCH --gres=gpu:h100:1
+#SBATCH --mem=16G
+#SBATCH --nodes=1
+#SBATCH --output=runscript.inference.out
+#SBATCH --partition=u1-h100
+#SBATCH --qos=gpu
+#SBATCH --time=00:10:00
+
+source ../../../conda/etc/profile.d/conda.sh
+conda activate anemoi
+set -ex
+
+export HYDRA_FULL_ERROR=1
+
+checkpoint=../training/outputs/checkpoint/4476bbab50e04ff5951b6e123ca4e443/inference-last.ckpt
+
+rm -f checkpoint.ckpt
+cp -fp "$checkpoint" checkpoint.ckpt
+
+cat config.yaml
+
+anemoi-inference patch checkpoint.ckpt
+anemoi-inference run config.yaml checkpoint=checkpoint.ckpt

@@ -1,0 +1,97 @@
+directories:
+  cache: cache/hrrr
+  logs: logs/hrrr
+  zarr: hrrr.zarr
+mover:
+  name: mpidatamover
+multisource:
+- source:
+    fhr:
+      start: 0
+      step: 6
+      end: 0
+    levels:
+    - 100
+    - 150
+    - 200
+    - 250
+    - 300
+    - 400
+    - 500
+    - 600
+    - 700
+    - 850
+    - 925
+    - 1000
+    t0:
+      start: 2022-02-01T06
+      freq: 6h
+      end: 2022-02-05T18
+    variables:
+    - gh
+    - u
+    - v
+    - w
+    - t
+    - q
+    - sp
+    - u10
+    - v10
+    - t2m
+    - t_surface
+    - sh2
+    - u80
+    - v80
+    - lsm
+    - orog
+    name: aws_hrrr_archive
+  transforms:
+    rotate_vectors:
+      vector_pairs:
+      - - u
+        - v
+      - - u10
+        - v10
+      - - u80
+        - v80
+- source:
+    fhr:
+      start: 6
+      step: 6
+      end: 6
+    t0:
+      start: 2022-02-01T00
+      freq: 6h
+      end: 2022-02-05T12
+    variables:
+    - accum_tp
+    name: aws_hrrr_archive
+target:
+  chunks:
+    cell: -1
+    ensemble: 1
+    time: 1
+    variable: -1
+  compute_temporal_residual_statistics: true
+  forcings:
+  - cos_latitude
+  - sin_latitude
+  - cos_longitude
+  - sin_longitude
+  - cos_julian_day
+  - sin_julian_day
+  - cos_local_time
+  - sin_local_time
+  - insolation
+  name: anemoi
+  sort_channels_by_levels: true
+  statistics_period:
+    start: 2022-02-01T06
+    end: 2022-02-04T18
+transforms:
+  horizontal_regrid:
+    regridder_kwargs:
+      method: conservative
+      reuse_weights: true
+      filename: conservative_1059x1799_211x359.nc
+    target_grid_path: /scratch4/BMC/rtrr/Samuel.Trahan/aistuff/300_paul_eagle/run/default/data/hrrr_15km.nc
