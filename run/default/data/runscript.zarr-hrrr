@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #SBATCH --account=gsd-fv3
-#SBATCH --chdir=/scratch4/BMC/rtrr/Samuel.Trahan/aistuff/300_paul_eagle/run/default/data
 #SBATCH --export=NONE
 #SBATCH --mem-per-cpu=3G
 #SBATCH --ntasks=4
@@ -10,7 +9,7 @@
 #SBATCH --time=00:10:00
 
 source /etc/profile.d/profile-slurm.sh
-source /scratch4/BMC/rtrr/Samuel.Trahan/aistuff/300_paul_eagle/conda/etc/profile.d/conda.sh
+source ../../../conda/bin/activate
 conda activate data
 set -ex
 

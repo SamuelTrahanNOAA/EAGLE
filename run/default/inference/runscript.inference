@@ -16,7 +16,8 @@ set -ex
 
 export HYDRA_FULL_ERROR=1
 
-checkpoint=../training/outputs/checkpoint/4476bbab50e04ff5951b6e123ca4e443/inference-last.ckpt
+checkpoint=$(  ls -1tr ../training/outputs/checkpoint/*/inference-last.ckpt |tail -1 )
+#checkpoint=../training/outputs/checkpoint/4476bbab50e04ff5951b6e123ca4e443/inference-last.ckpt
 
 rm -f checkpoint.ckpt
 cp -fp "$checkpoint" checkpoint.ckpt
