@@ -15,9 +15,11 @@ dependencies:
   - setuptools 81.0.*
   - triton 3.6.*
   - uwtools 2.16.*
+  - pydantic<2.0
   - pip:
       - anemoi-inference==0.11.1
       - anemoi-models==0.16.0
       - anemoi-training==0.14.0
       - anemoi-transform==0.4.2
       - eagle-tools==0.8.1
+      - anemoi-training[plotting]
